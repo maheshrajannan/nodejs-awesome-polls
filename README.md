@@ -52,3 +52,21 @@ If you have found a bug or if you have a feature request, please report them at 
 ## License
 
 This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
+
+## Known Warnings with 10.X 
+
+$ npm install
+npm WARN deprecated jade@1.11.0: Jade has been renamed to pug, please install the latest version of pug instead of jade
+npm WARN deprecated constantinople@3.0.2: Please update to at least constantinople 3.1.1
+npm WARN deprecated transformers@2.1.0: Deprecated, use jstransformer
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN awesome-polls@1.0.0 No repository field.
+npm WARN awesome-polls@1.0.0 No license field.
+
+added 184 packages from 206 contributors and audited 301 packages in 6.854s
+found 6 vulnerabilities (5 low, 1 moderate)
+  run `npm audit fix` to fix them, or `npm audit` for details
+
+## INFO this comes from
+
+https://auth0.com/blog/building-and-authenticating-nodejs-apps/
