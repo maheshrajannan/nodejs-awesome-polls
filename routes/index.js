@@ -10,15 +10,17 @@ var env = {
   AUTH0_CALLBACK_URL: process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
 };
 
+var renderLoginFunction =   function(req, res){
+    console.log("Defined function as a variable..AIYAA");
+    res.render('login', { env: env });
+  };
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { env: env });
 });
 
-router.get('/login',
-  function(req, res){
-    res.render('login', { env: env });
-  });
+router.get('/login',renderLoginFunction);
 
 router.get('/logout', function(req, res){
   req.logout();
@@ -29,6 +31,9 @@ router.get('/polls', ensureLoggedIn, function(req, res){
   request('http://elections.huffingtonpost.com/pollster/api/charts.json?topic=2016-president', function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var polls = JSON.parse(body);
+      console.log("user:"+JSON.stringify(req.user));
+      console.log("user emails:"+JSON.stringify(req.user.emails[0]));
+      console.log("user emails:"+req.user.emails[0]);
       res.render('polls', {user: req.user, polls: polls});
     } else {
       res.render('error');
@@ -37,6 +42,7 @@ router.get('/polls', ensureLoggedIn, function(req, res){
 })
 
 router.get('/user', ensureLoggedIn, function(req, res, next) {
+  req.user.email='mahesh.rajannan@gmail.com';
   res.render('user', { user: req.user });
 });
 

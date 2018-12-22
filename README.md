@@ -70,3 +70,20 @@ found 6 vulnerabilities (5 low, 1 moderate)
 ## INFO this comes from
 
 https://auth0.com/blog/building-and-authenticating-nodejs-apps/
+
+https://community.auth0.com/t/cors-error-despite-correct-settings-in-newly-created-tenant/9151/19
+
+Anny
+Auth0 Employee
+Feb 5
+As explained here https://auth0.com/docs/migrations#summary-of-endpoint-migrations 117
+
+We’re continually improving the security of our service. As part of this, we are deprecating a set of APIs (/usernamepassword/login, /ssodata, tokeninfo, /delegation) used by Lock.js v8, v9, and v10 and and auth0.js, v6, v7, and v8. You should update your applications by April 1, 2018.
+
+Currently, new tenants don’t have the ability to use older versions of Lock in embedded form and they also don’t have access to old legacy grant flows. This is one of the possible causes of the CORS error that you’re noticing.
+
+As explained in the migration document 117, it’s recommended that you move towards a centralized login experience 26 by using our Hosted Login Page 28. You can find migration guides to move from Embedded login to Centralized login in this document 39.
+
+If you decide you need to continue using embedded login, here are the migration guides for Auth0.js 9 35 and Lock 11 55.
+
+Please take into consideration that the Hosted Login Page is currently the only way to implement Passwordless authentication on native platforms, as explained here 14
