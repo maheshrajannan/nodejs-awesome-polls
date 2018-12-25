@@ -87,3 +87,19 @@ As explained in the migration document 117, it’s recommended that you move tow
 If you decide you need to continue using embedded login, here are the migration guides for Auth0.js 9 35 and Lock 11 55.
 
 Please take into consideration that the Hosted Login Page is currently the only way to implement Passwordless authentication on native platforms, as explained here 14
+
+https://stackoverflow.com/questions/46644366/what-is-passport-initialize-nodejs-express
+
+passport.initialize() is a middle-ware that initialises Passport.
+
+Middlewares are functions that have access to the request object (req), the response object (res), and the next middleware function in the application’s request-response cycle.
+
+Passport is an authentication middleware for Node that authenticates requests.
+
+So basically passport.initialize() initialises the authentication module.
+
+passport.session() is another middleware that alters the request object and change the 'user' value that is currently the session id (from the client cookie) into the true deserialized user object. It is explained in detail here.
+
+Even passport module can directly talk to google or any other Resource Server that implements oAuth2
+
+https://github.com/jaredhanson/passport-google-oauth2

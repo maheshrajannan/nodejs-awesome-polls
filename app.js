@@ -59,6 +59,7 @@ app.use(session({
   saveUninitialized: true
 }));
 //Express middleware is configured to use passportsession.
+//http://www.passportjs.org/docs/configure/
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
