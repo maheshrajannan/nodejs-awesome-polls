@@ -19,9 +19,14 @@ var strategy = new Auth0Strategy({
     clientSecret: process.env.AUTH0_CLIENT_SECRET,
     callbackURL:  process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback'
   }, function(accessToken, refreshToken, extraParams, profile, done) {
-    // accessToken is the token to call Auth0 API (not needed in the most cases)
+    console.log("accessToken:"+accessToken);
+    console.log("refreshToken:"+refreshToken);
+    console.log("extraParams:"+JSON.stringify(extraParams));
+    console.log("profile:"+JSON.stringify(profile));
+    // http://www.passportjs.org/packages/passport-auth0/
+    // INFO: accessToken is the token to call Auth0 API (not needed in the most cases)
     // extraParams.id_token has the JSON Web Token
-    // profile has all the information from the user
+    // profile has all the information requested from the user
     return done(null, profile);
   });
 
@@ -53,6 +58,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+//Express middleware is configured to use passportsession.
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));

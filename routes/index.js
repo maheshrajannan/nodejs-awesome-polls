@@ -16,6 +16,26 @@ var renderLoginFunction =   function(req, res){
     res.render('login', { env: env });
   };
 
+var cleanUser =   function(callContext,user){
+      console.log(callContext+"user:"+JSON.stringify(user));
+      console.log(callContext+"user emails stringify:"+JSON.stringify(user.emails[0]));
+      console.log(callContext+"user emails object:"+user.emails[0]);
+      console.log(callContext+"user emails value:"+JSON.stringify(user.emails[0].value));
+      if(user.nickname) {
+        console.log(callContext+"No need to change nickname");
+      } else {
+        user.nickname=user.emails[0].value;
+        console.log(callContext+"Nick name changed to "+user.nickname);
+      }
+      if(user.emails.value) {
+        console.log(callContext+"No need to change emails");
+      } else {
+        user.emails.value=user.emails[0].value;
+        console.log(callContext+"Email changed to "+user.emails.value);
+      }        
+      return user;  
+  };
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { env: env });
@@ -32,17 +52,8 @@ router.get('/polls', ensureLoggedIn, function(req, res){
   request('http://elections.huffingtonpost.com/pollster/api/charts.json?topic=2016-president', function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var polls = JSON.parse(body);
-      console.log("request:"+util.inspect(req));
-      console.log("user:"+JSON.stringify(req.user));
-      console.log("user emails stringify:"+JSON.stringify(req.user.emails[0]));
-      console.log("user emails object:"+req.user.emails[0]);
-      console.log("user emails value:"+JSON.stringify(req.user.emails[0].value));
-      if(req.user.nickname) {
-        console.log("No need to change nickname");
-      } else {
-        req.user.nickname=req.user.emails[0].value;
-        console.log("Nick name changed to "+req.user.nickname);
-      }
+      //console.log("request:"+util.inspect(req));
+      req.user=cleanUser("From /polls",req.user);
       res.render('polls', {user: req.user, polls: polls});
     } else {
       res.render('error');
@@ -51,13 +62,21 @@ router.get('/polls', ensureLoggedIn, function(req, res){
 })
 
 router.get('/user', ensureLoggedIn, function(req, res, next) {
-  //req.user.email='mahesh.rajannan@gmail.com';
+  req.user=cleanUser("From /user",req.user);
   res.render('user', { user: req.user });
 });
 
+//INFO: passport.authenticate takes its request object and if successful sets the 
+// user object
 router.get('/callback',
   passport.authenticate('auth0', { failureRedirect: '/error' }),
   function(req, res) {
+    //INFO: If this function gets called, authentication was successful.
+    // `req.user` contains the authenticated user.
+    //http://www.passportjs.org/packages/passport-auth0/
+    //INFO: refer the configuration being done on app.js
+    //auth0 sets it up on the response, passport takes it and set's it up on request ?
+    req.user=cleanUser("From callback",req.user);
     res.redirect(req.session.returnTo || '/polls');
   });
 
